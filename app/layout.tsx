@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from 'next'
+import { env } from 'node:process'
 import { headers } from 'next/headers'
 import Script from 'next/script'
 import PageMotion from './PageMotion'
@@ -18,6 +19,7 @@ export const viewport: Viewport = {
 }
 
 const themeInitScript = `(function(){try{var saved=localStorage.getItem('resume-theme');var theme=saved==='light'||saved==='dark'?saved:(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');document.documentElement.dataset.theme=theme;document.documentElement.style.colorScheme=theme}catch(e){}})()`
+const gtagId = env.NEXT_PUBLIC_GTAG_ID?.trim()
 
 export async function generateMetadata(): Promise<Metadata> {
   const requestHeaders = await headers()
@@ -71,17 +73,21 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         {children}
         <SmoothScroll />
         <PageMotion />
-        <Script
-          async
-          src="https://www.googletagmanager.com/gtag/js?id=G-7TEY31ECWX"
-          strategy="beforeInteractive"
-        />
-        <Script id="gtag-init" strategy="beforeInteractive">
-          {`window.dataLayer = window.dataLayer || [];
+        {gtagId && (
+          <>
+            <Script
+              async
+              src={`https://www.googletagmanager.com/gtag/js?id=${gtagId}`}
+              strategy="beforeInteractive"
+            />
+            <Script id="gtag-init" strategy="beforeInteractive">
+              {`window.dataLayer = window.dataLayer || [];
 function gtag(){dataLayer.push(arguments);}
 gtag('js', new Date());
-gtag('config', 'G-7TEY31ECWX');`}
-        </Script>
+gtag('config', '${gtagId}');`}
+            </Script>
+          </>
+        )}
       </body>
     </html>
   )
