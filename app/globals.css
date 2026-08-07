@@ -1,0 +1,312 @@
+@import 'tailwindcss';
+
+@theme {
+  --color-paper: #f5f4ed;
+  --color-paper-deep: #ecebe3;
+  --color-ink: #171817;
+  --color-muted: #6d706b;
+  --color-accent: #193a65;
+  --color-accent-soft: #dbe5f0;
+  --color-night: #191a1d;
+  --color-night-soft: #232428;
+  --color-line: rgba(23, 24, 23, 0.12);
+  --font-serif: 'LXGW WenKai', 'Noto Serif SC', 'Songti SC', STSong, serif;
+  --font-sans:
+    'Instrument Sans Variable', 'Noto Sans SC Variable', 'PingFang SC', 'Microsoft YaHei', system-ui, sans-serif;
+  --font-mono: 'SFMono-Regular', 'Cascadia Code', 'Roboto Mono', monospace;
+}
+
+html[data-theme='dark'] {
+  --color-paper: #111318;
+  --color-paper-deep: #181b21;
+  --color-ink: #edf0ee;
+  --color-muted: #a5aba7;
+  --color-accent: #9bbce5;
+  --color-accent-soft: #26384f;
+  --color-night: #e7ebf0;
+  --color-night-soft: #d9dee5;
+  --color-line: rgba(237, 240, 238, 0.14);
+  --color-white: #242830;
+}
+
+@layer base {
+  html {
+    color: var(--color-ink);
+    background: var(--color-paper);
+    transition:
+      color 0.25s ease,
+      background-color 0.25s ease;
+  }
+
+  body {
+    overflow-x: hidden;
+    background-color: var(--color-paper);
+    background-image:
+      linear-gradient(rgba(23, 24, 23, 0.026) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(23, 24, 23, 0.026) 1px, transparent 1px);
+    background-size: 42px 42px;
+    font-family: var(--font-sans);
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    transition: background-color 0.25s ease;
+  }
+
+  ::selection {
+    color: var(--color-accent);
+    background: var(--color-accent-soft);
+  }
+
+  * {
+    scrollbar-color: rgba(23, 24, 23, 0.3) rgba(23, 24, 23, 0.05);
+    scrollbar-width: thin;
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: rgba(23, 24, 23, 0.05);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: rgba(23, 24, 23, 0.28);
+    border: 3px solid var(--color-paper);
+    border-radius: 999px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgba(23, 24, 23, 0.48);
+  }
+}
+
+html[data-theme='dark'] body {
+  background-image:
+    linear-gradient(rgba(237, 240, 238, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(237, 240, 238, 0.035) 1px, transparent 1px);
+}
+
+html[data-theme='dark'] .resume-hero::before {
+  background-image:
+    linear-gradient(rgba(237, 240, 238, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(237, 240, 238, 0.035) 1px, transparent 1px);
+}
+
+html[data-theme='dark'] .resume-sticker {
+  border-color: rgba(255, 255, 255, 0.12);
+  background: rgba(36, 40, 48, 0.78);
+  box-shadow:
+    0 12px 28px rgba(0, 0, 0, 0.26),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+.text-type__cursor {
+  display: inline-block;
+  margin-left: 0.2em;
+  animation: text-type-blink 0.55s infinite;
+}
+
+.reading-progress {
+  animation: page-progress linear;
+  animation-timeline: scroll();
+}
+
+.resume-hero::before {
+  position: absolute;
+  z-index: -2;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(23, 24, 23, 0.028) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(23, 24, 23, 0.028) 1px, transparent 1px);
+  background-size: 42px 42px;
+  mask-image: linear-gradient(to bottom, #000, transparent 88%);
+  content: '';
+}
+
+.resume-hero::after {
+  position: absolute;
+  z-index: -1;
+  top: -270px;
+  right: -120px;
+  width: 460px;
+  height: 460px;
+  border-radius: 50%;
+  background: var(--color-accent-soft);
+  opacity: 0.72;
+  animation: hero-orb-drift 32s ease-in-out infinite alternate;
+  content: '';
+  will-change: transform, border-radius;
+}
+
+.resume-stickers {
+  z-index: -1;
+  pointer-events: none;
+  -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 82%, rgba(0, 0, 0, 0.3) 92%, transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 0%, #000 82%, rgba(0, 0, 0, 0.3) 92%, transparent 100%);
+}
+
+.resume-sticker {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.88);
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.72);
+  box-shadow:
+    0 12px 28px rgba(35, 52, 75, 0.14),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(8px);
+  will-change: transform;
+}
+
+.resume-sticker img {
+  display: block;
+  width: 58%;
+  height: 58%;
+  object-fit: contain;
+  user-select: none;
+}
+
+@media (min-width: 641px) and (hover: hover) and (pointer: fine) {
+  .resume-sticker {
+    pointer-events: auto;
+    cursor: grab;
+    touch-action: none;
+  }
+
+  .resume-sticker.is-dragging {
+    z-index: 2;
+    cursor: grabbing;
+    box-shadow:
+      0 18px 36px rgba(35, 52, 75, 0.2),
+      inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  }
+}
+
+.resume-hero > :not(.resume-stickers) {
+  position: relative;
+  z-index: 1;
+}
+
+.hero-contact {
+  --card-rotate-x: 0deg;
+  --card-rotate-y: 0deg;
+  --card-glow-x: 50%;
+  --card-glow-y: 50%;
+  transform: perspective(900px) rotateX(var(--card-rotate-x)) rotateY(var(--card-rotate-y));
+  transform-style: preserve-3d;
+  transition-timing-function: ease-out;
+  will-change: transform;
+}
+
+.hero-contact::before {
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  background: radial-gradient(
+    circle at var(--card-glow-x) var(--card-glow-y),
+    rgba(255, 255, 255, 0.72),
+    transparent 42%
+  );
+  opacity: 0.64;
+  transition: opacity 0.25s;
+  content: '';
+  pointer-events: none;
+}
+
+html[data-theme='dark'] .hero-contact::before {
+  background: radial-gradient(
+    circle at var(--card-glow-x) var(--card-glow-y),
+    rgba(155, 188, 229, 0.14),
+    transparent 46%
+  );
+  opacity: 0;
+}
+
+html[data-theme='dark'] .hero-contact:hover::before,
+html[data-theme='dark'] .hero-contact:focus-within::before {
+  opacity: 0.42;
+}
+
+.hero-contact > * {
+  position: relative;
+  z-index: 1;
+  transform: translateZ(18px);
+}
+
+.hero-contact dl {
+  transform: translateZ(28px);
+}
+
+@keyframes text-type-blink {
+  0%,
+  49% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes page-progress {
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@keyframes hero-orb-drift {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1);
+    border-radius: 50%;
+  }
+  45% {
+    transform: translate3d(-38px, 28px, 0) scale(1.08);
+    border-radius: 46% 54% 58% 42% / 52% 43% 57% 48%;
+  }
+  100% {
+    transform: translate3d(26px, 56px, 0) scale(0.94);
+    border-radius: 56% 44% 45% 55% / 42% 55% 45% 58%;
+  }
+}
+
+@media (max-width: 640px) {
+  body {
+    background-size: 32px 32px;
+  }
+
+  .resume-stickers {
+    -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 82%, rgba(0, 0, 0, 0.3) 92%, transparent 100%);
+    mask-image: linear-gradient(to bottom, #000 0%, #000 82%, rgba(0, 0, 0, 0.3) 92%, transparent 100%);
+  }
+
+  .resume-sticker {
+    border-radius: 17px;
+    opacity: 0.78;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .resume-hero::after {
+    animation: none;
+  }
+  .resume-sticker {
+    opacity: 0.58;
+  }
+  .hero-contact,
+  .hero-contact > * {
+    transform: none !important;
+  }
+}
