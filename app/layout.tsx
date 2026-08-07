@@ -38,8 +38,8 @@ export async function generateMetadata(): Promise<Metadata> {
     publisher: '阿纸',
     formatDetection: { email: false, address: false, telephone: false },
     icons: {
-      icon: '/favicon.png',
-      shortcut: '/favicon.png',
+      icon: '/favicon.ico',
+      shortcut: '/favicon.ico',
       apple: '/apple-icon.png',
     },
     alternates: { canonical: '/' },
